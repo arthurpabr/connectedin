@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect
 from django.views.generic.base import View
-from usuarios.forms import RegistrarUsuarioForm
 from django.contrib.auth.models import User
+from usuarios.forms import RegistrarUsuarioForm
+from perfis.models import Perfil
 
 # Criando uma class-based-view
 class RegistrarUsuarioView(View):
@@ -17,14 +18,15 @@ class RegistrarUsuarioView(View):
 		form = RegistrarUsuarioForm(request.POST)
 		if form.is_valid():
 			dados_form = form.data
-
-			usuario = User.objects.create_user(dados_form['nome'], dados_form['email'],dados_form['senha'])
-
+			#cria um usuario para os dados recebidos no formulario
+			usuario = User.objects.create_user(dados_form['email'], dados_form['email'],dados_form['senha'])
+			#cria um perfil 
 			perfil = Perfil(nome=dados_form['nome'],
 							email=dados_form['email'],
 							telefone=dados_form['telefone'],
+							nome_empresa=dados_form['nome_empresa'],
 							usuario=usuario)
-
+			#grava o perfil no banco
 			perfil.save()
 			return redirect('index')
 

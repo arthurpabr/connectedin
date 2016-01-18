@@ -8,8 +8,8 @@ class RegistrarUsuarioForm(forms.Form):
 	nome = forms.CharField(required=True)
 	email = forms.EmailField(required=True)
 	senha = forms.CharField(required=True)
-	telefone = forms.CharField(required=True)
-	nome_empresa = forms.CharField(required=True)
+	#telefone = forms.CharField(required=True)
+	#nome_empresa = forms.CharField(required=True)
 
 	def is_valid(self):
 		valid = True
@@ -17,7 +17,7 @@ class RegistrarUsuarioForm(forms.Form):
 			self.adiciona_erro('Por favor, verifique os dados informados')
 			valid = False
 
-		user_exists = User.objects.filter(username=self.data['nome']).exists()
+		user_exists = User.objects.filter(username=self.data['email']).exists()
 
 		if user_exists:
 			self.adiciona_erro('Usuario ja existente!')
